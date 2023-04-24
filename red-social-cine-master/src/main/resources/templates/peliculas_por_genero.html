@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Cinéfilos</title>
+    <link rel="icon" href="/logo.png">
+
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="/estilos.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/}"><img src="/logo.png" width="50"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mynavbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item" th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
+                        <a class="nav-link" th:case="${false}" th:href="@{/iniciar}">Iniciar sesión</a>
+                    </li>
+                    <li class="nav-item dropdown" th:if="${#authentication}? ${#authorization.expression('isAuthenticated()')}">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" th:text="${#authentication.getName}"></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item link-danger" th:href="@{/personal}">Mi feed</a></li>
+                            <li><a class="dropdown-item link-danger" th:href="@{/usuario/{username} (username = ${#authentication.getName})}">Mi perfil</a></li>
+                            <li class="nav-item" th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
+                                <a class="dropdown-item link-danger" th:case="${true}" th:href="@{/logout}">Cerrar sesión</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/pelicula/ver-todas/0}">Ver todas</a>
+                    </li>
+                    <div sec:authorize-url="/pelicula/todas">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/pelicula/todas}">Administrar peliculas</a>
+                        </li>
+                    </div>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Géneros</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = acción)}">Acción</a></li>
+                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = aventura)}">Aventura</a></li>
+                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = cienciaficción)}">Ciencia ficción</a></li>
+                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = comedia)}">Comedia</a></li>
+                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = documental)}">Documental</a></li>
+                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = drama)}">Drama</a></li>
+                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = fantasía)}">Fantasía</a></li>
+                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = musical)}">Musical</a></li>
+                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = suspenso)}">Suspenso</a></li>
+                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = terror)}">Terror</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="d-flex" th:action="@{/pelicula/busqueda}" method="get">
+                    <input class="form-control me-2" type="text" placeholder="Buscar" name="palabra" th:value="${palabra}">
+                    <button class="btn btn-outline-danger" type="submit">Buscar</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+</header>
+<body>
+
+<div th:each="pelicula : ${peliculas}">
+    <div class="card border-danger mb-3" style="max-width: 540px;">
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <img th:src="${'/foto/peliculas/' +pelicula.id}" class="card-img" alt="...">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${pelicula.titulo}"></h5>
+                    <p class="card-text" th:text="${pelicula.extracto}"></p>
+                    <button type="button" class="btn btn-danger"><a class="text-decoration-none link-light" th:href="@{/pelicula/detalles/{id}(id=${pelicula.id})}">Ver más</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="page-footer font-small color-dark pt-4">
+
+    <!-- Footer Elements -->
+    <div class="container">
+
+        <!-- Call to action -->
+        <ul class="list-unstyled list-inline text-center py-2">
+            <li class="list-inline-item">
+                <h5 class="mb-1 text-secondary">Forma parte de la comunidad: </h5>
+            </li>
+            <li class="list-inline-item">
+                <button class="btn btn-outline-danger"> <a class="text-decoration-none text-danger" th:href="@{/registrar}">Registrarse!</a></button>
+            </li>
+        </ul>
+        <!-- Call to action -->
+
+    </div>
+    <!-- Footer Elements -->
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3 text-secondary">© Hecho por:
+        <a href="https://github.com/juliascode96/red-social-cine" class="text-decoration-none link-secondary">equipo1@EggCoop</a>
+    </div>
+    <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
+</body>
+</html>

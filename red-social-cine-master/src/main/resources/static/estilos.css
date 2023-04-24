@@ -1,0 +1,73 @@
+* {
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
+body {
+    background: rgb(150,150,150);
+    background: linear-gradient(90deg, rgba(150,150,150,1) 0%, rgba(255,0,0,0.18110994397759106) 50%, rgba(150,150,150,1) 100%);
+}
+
+main {
+    margin-left: 10px;
+}
+
+.botones {
+    margin: 10px 0px;
+}
+
+td {
+    align-items: center;
+}
+
+.tabla-usuarios a:hover {
+    color: white;
+}
+
+.cosas-usuarios {
+    display : flex;
+}
+
+footer {
+    background: black;
+}
+
+.objeto {
+    margin: 5px;
+}
+
+.hola {
+    display: flex;
+}
+
+.hola table {
+    margin: 10px;
+}
+
+.tarjetas {
+    width: 70%;
+}
+
+.formulario {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    background: rgba(253, 88, 88, 0.21);
+    border-radius: 15%;
+    padding: 10px;
+    margin: 15px auto;
+}
+
+.card {
+    background: rgba(2, 0, 36, 0);
+}
+
+.resenias {
+    width: 70%;
+    margin: 15px auto;
+}
+
+.resenias div {
+    margin: 0px auto;
+}
+
